@@ -4,8 +4,10 @@ import { Pool } from 'pg';
  * Connection pool for PostgreSQL database.
  */
 const pool = new Pool({
-  connectionString: process.env.DB_URL,
-  ssl: true
+  connectionString: process.env.DB_URL || process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' || process.env.DB_URL?.includes('render.com')
+    ? { rejectUnauthorized: false }
+    : false,
 });
 
 let db = null;
