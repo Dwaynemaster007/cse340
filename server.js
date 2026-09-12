@@ -1,8 +1,13 @@
-import { getAllOrganizations } from './src/models/organizations.js';
+
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
+import { getAllProjects } from './src/models/projects.js';
+import { getAllOrganizations } from './src/models/organizations.js';
+import { getCategories } from './src/models/categories.js';
+
+
 
 // Environment & Port setup
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -13,6 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -38,13 +44,22 @@ app.get('/organizations', async (req, res) => {
 });
 
 app.get('/projects', async (req, res) => {
+    const projects = await getAllProjects();
     const title = 'Service Projects';
-    res.render('projects', { title });
+
+    res.render('projects', { title, projects});
 });
 
-app.get('/categories', async (req, res) => {
-    const title = 'Service Project Categories';
-    res.render('categories', { title });
+app.get('/categories', async (req, res, next) => {
+  try {
+    const categories = await getCategories();
+    res.render('categories', {
+      title: 'Service Project Categories',
+      categories: categories,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Start Server

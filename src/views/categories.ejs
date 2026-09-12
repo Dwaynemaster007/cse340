@@ -3,12 +3,15 @@
 <main>
     <h1><%= title %></h1>
 
-    <ul class="categories-list">
-        <li>Environmental</li>
-        <li>Educational</li>
-        <li>Community Service</li>
-        <li>Health and Wellness</li>
-    </ul>
+    <% if (categories && categories.length > 0) { %>
+        <ul class="categories-list">
+            <% categories.forEach(function(category) { %>
+                <li><%= category.category_name %></li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No categories found.</p>
+    <% } %>
 </main>
 
 <%- include('partials/footer') %>
