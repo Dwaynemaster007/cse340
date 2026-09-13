@@ -1,11 +1,10 @@
-
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
 import { getAllProjects } from './src/models/projects.js';
 import { getAllOrganizations } from './src/models/organizations.js';
-import { getCategories } from './src/models/categories.js';
+import { getAllCategories } from './src/models/categories.js';
 
 
 
@@ -52,7 +51,7 @@ app.get('/projects', async (req, res) => {
 
 app.get('/categories', async (req, res, next) => {
   try {
-    const categories = await getCategories();
+    const categories = await getAllCategories();
     res.render('categories', {
       title: 'Service Project Categories',
       categories: categories,
@@ -72,4 +71,3 @@ app.listen(PORT, async () => {
     console.error('Error connecting to the database:', error);
   }
 });
-

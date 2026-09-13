@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS organization CASCADE;
 CREATE TABLE organization (
     organization_id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
@@ -52,6 +53,45 @@ VALUES
     (3, 'Book Drive & Library Sorting', 'Collect, inspect, and organize donated books for local school libraries.', 'Main Branch Library', '2026-11-08', 'Education'),
     (3, 'STEM Science Fair Mentoring', 'Guide high school students on science fair project experiments.', 'Community Science Lab', '2026-11-18', 'Education');
 
+-- ========================================
+-- Categories Table
+-- ========================================
+DROP TABLE IF EXISTS projects_categories CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
 
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    category_name VARCHAR(100) NOT NULL UNIQUE
+);
 
+INSERT INTO categories (category_name)
+VALUES
+    ('Environment'),
+    ('Community Support'),
+    ('Education');
 
+-- ========================================
+-- Projects_Categories Junction Table
+-- (Many-to-many relationship between projects and categories)
+-- ========================================
+CREATE TABLE projects_categories (
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    PRIMARY KEY (project_id, category_id),
+    CONSTRAINT fk_project
+        FOREIGN KEY (project_id)
+        REFERENCES public.projects (project_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_category
+        FOREIGN KEY (category_id)
+        REFERENCES public.categories (category_id)
+        ON DELETE CASCADE
+);
+
+-- Associate every existing project with its matching category,
+-- using the project's original "category" text value to look up
+-- the correct category_id.
+INSERT INTO projects_categories (project_id, category_id)
+SELECT p.project_id, c.category_id
+FROM public.projects p
+JOIN public.categories c ON p.category = c.category_name;

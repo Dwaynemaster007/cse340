@@ -5,7 +5,7 @@
 
     <% if (categories && categories.length > 0) { %>
         <ul class="categories-list">
-            <% categories.forEach(function(category) { %>
+            <% categories.forEach((category) => { %>
                 <li><%= category.category_name %></li>
             <% }); %>
         </ul>

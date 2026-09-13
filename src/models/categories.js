@@ -1,12 +1,13 @@
-import db from './db.js'; 
+import db from './db.js';
 
-export async function getCategories() {
-  try {
-    const sql = 'SELECT * FROM categories ORDER BY category_name ASC;';
-    const result = await db.query(sql);
-    return result.rows;
-  } catch (error) {
-    console.error('getCategories error: ' + error);
-    throw error;
-  }
-}
+const getAllCategories = async () => {
+  const query = `
+    SELECT category_id, category_name
+    FROM public.categories
+    ORDER BY category_name;
+  `;
+  const result = await db.query(query);
+  return result.rows;
+};
+
+export { getAllCategories };
