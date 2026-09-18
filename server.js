@@ -6,8 +6,6 @@ import { getAllProjects } from './src/models/projects.js';
 import { getAllOrganizations } from './src/models/organizations.js';
 import { getAllCategories } from './src/models/categories.js';
 
-
-
 // Environment & Port setup
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
@@ -18,7 +16,6 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -26,10 +23,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
 
+// Middleware to make NODE_ENV available in all EJS templates
+app.use((req, res, next) => {
+  res.locals.NODE_ENV = NODE_ENV;
+  next();
+});
+
 // Routes
-/**
- * Routes
- */
 app.get('/', async (req, res) => {
     const title = 'Home';
     res.render('home', { title });
