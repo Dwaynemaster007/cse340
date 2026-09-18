@@ -65,9 +65,26 @@ const getProjectDetails = async (id) => {
   return result.rows.length > 0 ? result.rows[0] : null;
 };
 
+// 3. Get all categories for a given service project
+const getCategoriesByProjectId = async (projectId) => {
+  const query = `
+    SELECT
+      c.category_id,
+      c.category_name AS name
+    FROM public.categories c
+    JOIN public.projects_categories pc ON c.category_id = pc.category_id
+    WHERE pc.project_id = $1
+    ORDER BY c.category_name;
+  `;
+  const result = await db.query(query, [projectId]);
+  return result.rows;
+};
+
+// Single export statement for all functions
 export {
   getAllProjects,
   getProjectsByOrganizationId,
   getUpcomingProjects,
   getProjectDetails,
+  getCategoriesByProjectId,
 };

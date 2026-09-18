@@ -9,6 +9,17 @@
     <strong>Organization:</strong> 
     <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>
   </p>
+
+  <p><strong>Categories:</strong> 
+    <% if (categories && categories.length > 0) { %>
+      <% categories.forEach((category, index) => { %>
+        <a href="/category/<%= category.category_id %>"><%= category.name %></a><%= index < categories.length - 1 ? ', ' : '' %>
+      <% }) %>
+    <% } else { %>
+      None
+    <% } %>
+  </p>
+
   <a href="/projects">&larr; Back to Service Projects</a>
 </main>
 

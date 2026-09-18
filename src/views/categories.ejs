@@ -1,17 +1,16 @@
 <%- include('partials/header') %>
 
-<main>
-    <h1><%= title %></h1>
-
-    <% if (categories && categories.length > 0) { %>
-        <ul class="categories-list">
-            <% categories.forEach((category) => { %>
-                <li><%= category.category_name %></li>
-            <% }); %>
-        </ul>
-    <% } else { %>
-        <p>No categories found.</p>
-    <% } %>
+<main class="container">
+  <h1><%= title %></h1>
+  <ul>
+    <% categories.forEach(category => { %>
+      <li>
+        <a href="/category/<%= category.category_id %>">
+          <strong><%= category.name %></strong>
+        </a>: <%= category.description %>
+      </li>
+    <% }) %>
+  </ul>
 </main>
 
 <%- include('partials/footer') %>

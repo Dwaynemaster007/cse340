@@ -1,11 +1,12 @@
 import {
   getUpcomingProjects,
   getProjectDetails,
+  getCategoriesByProjectId,
 } from '../models/projects.js';
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
-// Update existing function to load only upcoming projects
+// Show list of upcoming service projects
 const showProjectsPage = async (req, res, next) => {
   try {
     const projects = await getUpcomingProjects(NUMBER_OF_UPCOMING_PROJECTS);
@@ -16,7 +17,7 @@ const showProjectsPage = async (req, res, next) => {
   }
 };
 
-// Controller for single project details
+// Show single project details with category tags
 const showProjectDetailsPage = async (req, res, next) => {
   try {
     const projectId = req.params.id;
@@ -28,8 +29,10 @@ const showProjectDetailsPage = async (req, res, next) => {
       return next(err);
     }
 
+    const categories = await getCategoriesByProjectId(projectId);
     const title = project.title;
-    res.render('project', { title, project });
+
+    res.render('project', { title, project, categories });
   } catch (error) {
     next(error);
   }

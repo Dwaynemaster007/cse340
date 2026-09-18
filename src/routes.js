@@ -8,7 +8,10 @@ import {
   showProjectsPage,
   showProjectDetailsPage,
 } from './controllers/projects.js';
-import { showCategoriesPage } from './controllers/categories.js';
+import {
+  showCategoriesPage,
+  showCategoryDetailsPage,
+} from './controllers/categories.js';
 
 const router = express.Router();
 
@@ -24,5 +27,6 @@ router.get('/project/:id', showProjectDetailsPage);
 
 // Category routes
 router.get('/categories', showCategoriesPage);
+router.get('/category/:id', showCategoryDetailsPage);
 
 export default router;
