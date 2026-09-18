@@ -1,14 +1,15 @@
 <%- include('partials/header') %>
 
-<main>
-    <h1><%= title %></h1>
-
-    <h2>Upcoming Service Projects</h2>
-    <ul>
-        <% projects.forEach(project => { %>
-            <li><%= project.date %>: <strong><%= project.title %></strong> (<%= project.organization_name %>)</li>
-        <% }); %>
-    </ul>
+<main class="container">
+  <h1><%= title %></h1>
+  <ul>
+    <% projects.forEach(project => { %>
+      <li>
+        <a href="/project/<%= project.project_id %>"><%= project.title %></a> - 
+        Hosted by: <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>
+      </li>
+    <% }) %>
+  </ul>
 </main>
 
 <%- include('partials/footer') %>
