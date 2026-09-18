@@ -61,6 +61,28 @@ app.get('/categories', async (req, res, next) => {
   }
 });
 
+// Test route for 500 errors (Temporary for testing)
+app.get('/test-error', (req, res, next) => {
+  const err = new Error('This is a test error');
+  err.status = 500;
+  next(err);
+});
+
+// 404 Handler (Triggers for any undefined routes)
+app.use((req, res, next) => {
+  res.status(404).render('404', { title: '404 - Page Not Found' });
+});
+
+// Global 500 Error Handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  const status = err.status || 500;
+  res.status(status).render('500', {
+    title: `${status} - Server Error`,
+    error: err
+  });
+});
+
 // Start Server
 app.listen(PORT, async () => {
   try {
