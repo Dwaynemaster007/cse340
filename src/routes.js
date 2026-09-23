@@ -19,6 +19,8 @@ import {
 import {
   showCategoriesPage,
   showCategoryDetailsPage,
+  showAssignCategoriesForm,
+  processAssignCategoriesForm
 } from './controllers/categories.js';
 
 const router = express.Router();
@@ -46,5 +48,9 @@ router.get('/category/:id', showCategoryDetailsPage);
 // New project routes
 router.get('/new-project', showNewProjectForm);
 router.post('/new-project', projectValidation, processNewProjectForm);
+
+// Assign categories routes
+router.get('/assign-categories/:projectId', showAssignCategoriesForm);
+router.post('/assign-categories/:projectId', processAssignCategoriesForm);
 
 export default router;
