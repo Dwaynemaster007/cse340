@@ -12,6 +12,9 @@ import {
 import {
   showProjectsPage,
   showProjectDetailsPage,
+  showNewProjectForm,
+  processNewProjectForm,
+  projectValidation
 } from './controllers/projects.js';
 import {
   showCategoriesPage,
@@ -39,5 +42,9 @@ router.get('/project/:id', showProjectDetailsPage);
 // Category routes
 router.get('/categories', showCategoriesPage);
 router.get('/category/:id', showCategoryDetailsPage);
+
+// New project routes
+router.get('/new-project', showNewProjectForm);
+router.post('/new-project', projectValidation, processNewProjectForm);
 
 export default router;
