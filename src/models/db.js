@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 
 console.log('DB_URL value:', JSON.stringify(process.env.DB_URL));
+console.log('DATABASE_URL value:', JSON.stringify(process.env.DATABASE_URL));
 /**
  * Connection pool for PostgreSQL database.
  */
