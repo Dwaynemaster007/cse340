@@ -3,6 +3,8 @@ import { showHomePage } from './controllers/index.js';
 import {
   showOrganizationsPage,
   showOrganizationDetailsPage,
+  showNewOrganizationForm,
+  processNewOrganizationForm,
 } from './controllers/organizations.js';
 import {
   showProjectsPage,
@@ -19,6 +21,8 @@ router.get('/', showHomePage);
 
 // Organization routes
 router.get('/organizations', showOrganizationsPage);
+router.get('/new-organization', showNewOrganizationForm);
+router.post('/new-organization', processNewOrganizationForm);
 router.get('/organization/:id', showOrganizationDetailsPage);
 
 // Service Project routes
