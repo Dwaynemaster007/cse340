@@ -1,0 +1,13 @@
+<%- include('partials/header') %>
+<main>
+  <h1><%= title %></h1>
+  <form action="/edit-category/<%= category.category_id %>" method="POST">
+    <div class="form-group">
+      <label for="name">Category Name</label>
+      <input type="text" id="name" name="name" maxlength="100" required
+             value="<%= category.name %>" />
+    </div>
+    <button type="submit">Update Category</button>
+  </form>
+</main>
+<%- include('partials/footer') %>
