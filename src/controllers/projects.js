@@ -2,7 +2,8 @@ import {
   getUpcomingProjects,
   getProjectDetails,
   getCategoriesByProjectId,
-  createProject
+  createProject,
+  updateProject,
 } from '../models/projects.js';
 import { getAllOrganizations } from '../models/organizations.js';
 import { body, validationResult } from 'express-validator';
@@ -90,6 +91,49 @@ const showProjectDetailsPage = async (req, res, next) => {
   }
 };
 
+const showEditProjectForm = async (req, res) => {
+  const projectId = req.params.id;
+  const project = await getProjectDetails(projectId);
+  const organizations = await getAllOrganizations();
+
+  if (!project) {
+    req.flash('error', 'Project not found.');
+    return res.redirect('/projects');
+  }
+
+  // Format the date for the HTML date input (YYYY-MM-DD)
+  if (project.date) {
+    project.date = new Date(project.date).toISOString().split('T')[0];
+  }
+
+  const title = 'Edit Service Project';
+  res.render('edit-project', { title, project, organizations });
+};
+
+const processEditProjectForm = async (req, res) => {
+  // Check validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errors.array().forEach((error) => {
+      req.flash('error', error.msg);
+    });
+    return res.redirect(`/edit-project/${req.params.id}`);
+  }
+
+  const projectId = req.params.id;
+  const { title, description, location, date, organizationId } = req.body;
+
+  try {
+    await updateProject(projectId, title, description, location, date, organizationId);
+    req.flash('success', 'Project updated successfully!');
+    res.redirect(`/project/${projectId}`);
+  } catch (error) {
+    console.error('Error updating project:', error);
+    req.flash('error', 'There was an error updating the project.');
+    res.redirect(`/edit-project/${projectId}`);
+  }
+};
+
 export { showProjectsPage, showProjectDetailsPage, showNewProjectForm,
-  processNewProjectForm,
-  projectValidation};
+  processNewProjectForm, projectValidation, showEditProjectForm,
+  processEditProjectForm};
