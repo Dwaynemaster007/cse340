@@ -1,17 +1,20 @@
 <%- include('partials/header') %>
 
 <main class="container">
-  <h1><%= title %></h1>
-  <ul>
-    <% categories.forEach(category => { %>
-      <li>
-        <a href="/category/<%= category.category_id %>">
-          <strong><%= category.name %></strong>
-        </a>: <%= category.description %>
-      </li>
-    <% }) %>
-  </ul>
-  <p><a href="/new-category">Add a New Category</a></p>
+    <h1><%= title %></h1>
+    <ul>
+        <% categories.forEach(category => { %>
+            <li>
+                <a href="/category/<%= category.category_id %>">
+                    <strong><%= category.name %></strong>
+                </a>: <%= category.description %>
+            </li>
+        <% }) %>
+    </ul>
+
+    <% if (user && user.role_name === 'admin') { %>
+        <p><a href="/new-category">Add a New Category</a></p>
+    <% } %>
 </main>
 
 <%- include('partials/footer') %>

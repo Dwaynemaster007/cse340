@@ -6,11 +6,11 @@
   <p><strong>Date:</strong> <%= new Date(project.date).toLocaleDateString() %></p>
   <p><strong>Location:</strong> <%= project.location %></p>
   <p>
-    <strong>Organization:</strong> 
+    <strong>Organization:</strong>
     <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>
   </p>
 
-  <p><strong>Categories:</strong> 
+  <p><strong>Categories:</strong>
     <% if (categories && categories.length > 0) { %>
       <% categories.forEach((category, index) => { %>
         <a href="/category/<%= category.category_id %>"><%= category.name %></a><%= index < categories.length - 1 ? ', ' : '' %>
@@ -21,9 +21,12 @@
   </p>
 
   <a href="/projects">&larr; Back to Service Projects</a>
+
+  <% if (user && user.role_name === 'admin') { %>
+    <p>
+      <a href="/edit-project/<%= project.project_id %>">Edit Project</a> |
+      <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a>
+    </p>
+  <% } %>
 </main>
-<p>
-  <a href="/edit-project/<%= project.project_id %>">Edit Project</a> |
-  <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a>
-</p>
 <%- include('partials/footer') %>
