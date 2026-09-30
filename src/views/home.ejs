@@ -7,6 +7,11 @@
     <p>Our mission is to promote service across the world by connecting volunteers with service opportunities in their community.</p>
 
     <img class="main-logo" src="images/cse340-service-network.png" alt="CSE 340 Service Network Logo">
+
+    <% if (isLoggedIn) { %>
+        <p><a href="/dashboard">My Dashboard</a></p>
+    <% } %>
+
 </main>
 
 <%- include('partials/footer') %>
