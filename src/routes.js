@@ -16,7 +16,9 @@ import {
   processNewProjectForm,
   projectValidation,
   showEditProjectForm,
-  processEditProjectForm
+  processEditProjectForm,
+  processVolunteer,
+  processUnvolunteer
 } from './controllers/projects.js';
 import {
   showCategoriesPage,
@@ -40,9 +42,7 @@ import {
   requireRole,
   showUsersPage
 } from './controllers/users.js';
-// Volunteer routes (logged-in users only)
-router.post('/project/:id/volunteer', requireLogin, processVolunteer);
-router.post('/project/:id/unvolunteer', requireLogin, processUnvolunteer);
+
 
 const router = express.Router();
 
@@ -120,5 +120,9 @@ router.get('/dashboard', requireLogin, showDashboard);
 
 // Admin-only users list
 router.get('/users', requireRole('admin'), showUsersPage);
+
+// Volunteer routes (logged-in users only)
+router.post('/project/:id/volunteer', requireLogin, processVolunteer);
+router.post('/project/:id/unvolunteer', requireLogin, processUnvolunteer);
 
 export default router;
