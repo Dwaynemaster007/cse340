@@ -40,6 +40,9 @@ import {
   requireRole,
   showUsersPage
 } from './controllers/users.js';
+// Volunteer routes (logged-in users only)
+router.post('/project/:id/volunteer', requireLogin, processVolunteer);
+router.post('/project/:id/unvolunteer', requireLogin, processUnvolunteer);
 
 const router = express.Router();
 

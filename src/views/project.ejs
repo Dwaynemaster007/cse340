@@ -21,7 +21,20 @@
   </p>
 
   <a href="/projects">&larr; Back to Service Projects</a>
-
+<% if (isLoggedIn) { %>
+  <div class="volunteer-section">
+    <% if (isVolunteering) { %>
+      <p><strong>You are volunteering for this project.</strong></p>
+      <form action="/project/<%= project.project_id %>/unvolunteer" method="POST">
+        <button type="submit">Remove me as a volunteer</button>
+      </form>
+    <% } else { %>
+      <form action="/project/<%= project.project_id %>/volunteer" method="POST">
+        <button type="submit">Volunteer for this project</button>
+      </form>
+    <% } %>
+  </div>
+<% } %>
   <% if (user && user.role_name === 'admin') { %>
     <p>
       <a href="/edit-project/<%= project.project_id %>">Edit Project</a> |

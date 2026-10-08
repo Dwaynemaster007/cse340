@@ -7,6 +7,13 @@ import {
 } from '../models/projects.js';
 import { getAllOrganizations } from '../models/organizations.js';
 import { body, validationResult } from 'express-validator';
+import {
+  addVolunteer,
+  removeVolunteer,
+  isUserVolunteering,
+  getProjectsByUserId
+} from '../models/volunteers.js';
+
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
 const projectValidation = [
@@ -83,12 +90,52 @@ const showProjectDetailsPage = async (req, res, next) => {
     }
 
     const categories = await getCategoriesByProjectId(projectId);
-    const title = project.title;
 
-    res.render('project', { title, project, categories });
+    let isVolunteering = false;
+    if (req.session && req.session.user) {
+      isVolunteering = await isUserVolunteering(req.session.user.user_id, projectId);
+    }
+
+    res.render('project', {
+      title: project.title,
+      project,
+      categories,
+      isVolunteering
+    });
   } catch (error) {
     next(error);
   }
+};
+
+const processVolunteer = async (req, res) => {
+  const projectId = req.params.id;
+  const userId = req.session.user.user_id;
+
+  try {
+    await addVolunteer(userId, projectId);
+    req.flash('success', 'You are now volunteering for this project!');
+  } catch (error) {
+    console.error(error);
+    req.flash('error', 'Could not sign up as a volunteer.');
+  }
+  res.redirect(`/project/${projectId}`);
+};
+
+const processUnvolunteer = async (req, res) => {
+  const projectId = req.params.id;
+  const userId = req.session.user.user_id;
+
+  try {
+    await removeVolunteer(userId, projectId);
+    req.flash('success', 'You are no longer volunteering for this project.');
+  } catch (error) {
+    console.error(error);
+    req.flash('error', 'Could not remove your volunteer signup.');
+  }
+
+  // Support redirect back to dashboard if requested
+  const redirectTo = req.query.from === 'dashboard' ? '/dashboard' : `/project/${projectId}`;
+  res.redirect(redirectTo);
 };
 
 const showEditProjectForm = async (req, res) => {
@@ -136,4 +183,4 @@ const processEditProjectForm = async (req, res) => {
 
 export { showProjectsPage, showProjectDetailsPage, showNewProjectForm,
   processNewProjectForm, projectValidation, showEditProjectForm,
-  processEditProjectForm};
+  processEditProjectForm, processVolunteer, processUnvolunteer };
